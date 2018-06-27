@@ -41,7 +41,9 @@ test('Agent', t => {
 })
 
 test.serial('Setup', t => {
+  t.truthy(AgentStub.hasMany.calledWith(MetricStub), 'Called with MetricStub')
   t.truthy(AgentStub.hasMany.called, 'AgentModel.hasMAny was executed')
+  t.truthy(MetricStub.belongsTo.calledWith(AgentStub), 'Called with AgentStub')
   t.truthy(MetricStub.belongsTo.called, 'MetricModel.belongsTo was executed')
 })
 
