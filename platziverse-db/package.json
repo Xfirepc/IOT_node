@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "setup": "DEBUG=platziverse:* node setup.js",
-    "test": "DEBUG=platziverse:* ava tests/ --verbose",
+    "test": "DEBUG=platziverse:* nyc --reporter=lcov ava tests/ --verbose",
     "lint": "standard"
   },
   "author": "Xfirepc",
   "license": "MIT",
   "devDependencies": {
+    "nyc": "^12.0.2",
     "sqlite": "^2.9.2",
     "standard": "^11.0.1"
   },
