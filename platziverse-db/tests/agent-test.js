@@ -18,7 +18,7 @@ let AgentStub = null
 let sandbox = null
 
 test.beforeEach(async () => {
-  sandobox = sinon.sandbox.create()
+  sandbox = sinon.createSandbox()
 
   AgentStub = {
     hasMany: sandbox.spy()
@@ -33,9 +33,16 @@ test.beforeEach(async () => {
 })
 
 test.afterEach(() => {
-  sandbox && sinon.sandbox.restore()
+  sandbox = sinon.createSandbox()
 })
 
 test('Agent', t => {
   t.truthy(db.Agent, 'Agent Service should exist')
 })
+
+test.serial('Setup', t => {
+  t.truthy(AgentStub.hasMany.called, 'AgentModel.hasMAny was executed')
+  t.truthy(MetricStub.belongsTo.called, 'MetricModel.belongsTo was executed')
+})
+
+
