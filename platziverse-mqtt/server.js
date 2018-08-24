@@ -4,7 +4,7 @@ const debug = require('debug')('platziverse:mqtt')
 const mosca = require('mosca')
 const redis = require('redis')
 const chalk = require('chalk')
-const db = require('platziverse-db')
+const db = require('../platziverse-db')
 const config = require('../platziverse-db/config-db')(false)
 
 const backend = {
@@ -15,7 +15,7 @@ const backend = {
 
 const settings = {
   port: 1883,
-  backend,
+  backend
 }
 
 const server = new mosca.Server(settings)
@@ -35,8 +35,7 @@ server.on('published', (packet, client) => {
   debug(`Payload: ${packet.payload}`)
 })
 
-server.on('ready', async () =>{
-
+server.on('ready', async () => {
   const services = await db(config).catch(handleFatalError)
 
   Agent = services.Agent
@@ -47,7 +46,7 @@ server.on('ready', async () =>{
 
 server.on('error', handleFatalError)
 
-function handleFatalError(err){
+function handleFatalError (err) {
   console.error(`${chalk.red('FATAL ERROR:')} err.message`)
   console.error(`${chalk.red('STACK ERROR:')} err.stack`)
   process.exit(1)
