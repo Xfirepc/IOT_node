@@ -1,0 +1,14 @@
+{
+  "name": "platziverse-agent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard"
+  },
+  "author": "XfirePC",
+  "license": "MIT",
+  "devDependencies": {
+    "standard": "^11.0.1"
+  }
+}
