@@ -14,7 +14,7 @@ const options = {
   username: 'platzi',
   inteval: 5000,
   mqtt: {
-    host: 'mqtt://localhost'
+    host: 'mqtt://localhost:1883'
   }
 }
 class PlatziverseAgent extends EventEmmiter{
@@ -28,12 +28,15 @@ class PlatziverseAgent extends EventEmmiter{
     this._agentId = null
     this._metrics = new Map()
   }
+
   addMetric (type, fn){
     this._metrics.set(type, fn)
   }
+
   removeMetric (type){
     this._metrics.delete(type)
   }
+
   connect() {
     if(!this._started){
       const opts = this._options
@@ -44,7 +47,7 @@ class PlatziverseAgent extends EventEmmiter{
       this._client.subscribe('agent/connected')
       this._client.subscribe('agent/disconnected')
 
-      this._client.on('connected', ()=> {
+      this._client.on('connect', ()=> {
         this._agentId = uuid.v4()
 
         this.emit('connected', this._agentId)
@@ -62,23 +65,22 @@ class PlatziverseAgent extends EventEmmiter{
                 metrics: [],
                 timestamp: new Date().getTime()
               }
-            }
 
-            for (let [metric, fn] of this._metrics){
-              if(fn.length == 1){
-                fn = util.promisify(fn)
+              for (let [metric, fn] of this._metrics){
+                if(fn.length == 1){
+                  fn = util.promisify(fn)
+                }
+  
+                message.metrics.push({
+                  type: metric,
+                  value: await Promise.resolve(fn())
+                })
               }
-
-              message.metrics.push({
-                type: metric,
-                value: await Promise.resolve(fn())
-              })
+              debug('Sending..', message)
+  
+              this._client.publish('agent/message', JSON.stringify(message))
+              this.emit('message', message)
             }
-
-            debug('Sending..', message)
-
-            this._client.publish('agent/message', JSON.stringify(message))
-            this.emit('message', message)
           }, opts.interval)
       })
 
