@@ -1,6 +1,6 @@
 'use strict'
 
-const debug = require('debug')
+const debug = require('debug')('platziverse:agent')
 const mqtt = require('mqtt')
 const defaults = require('defaults')
 const EventEmmiter = require('events')
@@ -20,8 +20,8 @@ class PlatziverseAgent extends EventEmmiter{
     super()
 
     this._options = defaults(opts, options)
-    this._timer = null
     this._started = false
+    this._timer = null
     this._client = null
     this._agentId = null
   }
@@ -54,8 +54,8 @@ class PlatziverseAgent extends EventEmmiter{
           case 'agent/connected':
           case 'agent/disconnected':
           case 'agent/message':
-            broadcast = payload && payload.agent && payload.agent.uuid
-            beak
+            broadcast = payload && payload.agent && payload.agent.uuid !== this._agentId
+            break
         }
 
         if (broadcast) {
@@ -63,7 +63,7 @@ class PlatziverseAgent extends EventEmmiter{
         }
       })
 
-      this._client.on('error', ()=> this.disconnect())
+      this._client.on('error', () => this.disconnect())
       
     }
   }
