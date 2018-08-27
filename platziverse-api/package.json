@@ -1,0 +1,17 @@
+{
+  "name": "platziverse-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "lint": "standard",
+    "start": "NODE_ENV=production node server.js",
+    "start-dev": "DEBUG=platziverse:* nodemon server.js"
+  },
+  "author": "XfirePc",
+  "license": "MIT",
+  "dependencies": {
+    "nodemon": "^1.18.3",
+    "standard": "^11.0.1"
+  }
+}
