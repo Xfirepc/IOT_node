@@ -7,7 +7,7 @@ const api = express.Router()
 
 api.get('/agents', (req, res) => {
   debug('A request has to come /agents')
-  res.send({})
+  res.status(200).send({})
 })
 
 api.get('/agent/:uuid', (req, res, next) => {

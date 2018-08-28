@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "test": "DEBUG=platziverse:* ava test/ --verbose",
     "lint": "standard",
     "start": "NODE_ENV=production node server.js",
     "start-dev": "DEBUG=platziverse:* nodemon server.js"
@@ -15,5 +16,9 @@
     "express": "^4.16.3",
     "nodemon": "^1.18.3",
     "standard": "^11.0.1"
+  },
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "supertest": "^3.1.0"
   }
 }
