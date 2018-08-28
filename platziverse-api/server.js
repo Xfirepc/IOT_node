@@ -1,5 +1,6 @@
 'use strict'
 
+const debug = require('debug')('platziverse:api:reputes')
 const http = require('http')
 const express = require('express')
 const chalk = require('chalk')
@@ -15,13 +16,15 @@ app.use('/api', api)
 // Express Error Handler
 
 app.use((err, req, res, next) => {
-  debug(`Error: ${error.message}`)
+  debug(`Error: ${err.message}`)
 
   if (err.message.match(/not found/))
     return res.status(404).send({ error: err.message })
 
   res.status(500).send({ error: err.message })
 })
+
+
 
 function handleFatalError (err) {
   console.error(`${chalk.red('[fatal error]')} ${err.message}`)

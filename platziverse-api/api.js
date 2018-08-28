@@ -1,6 +1,6 @@
 'use strict'
 
-const debug = require('debug')('platziverse:api:reputes')
+const debug = require('debug')('platziverse:api:routes')
 const express = require('express')
 
 const api = express.Router()
@@ -10,8 +10,12 @@ api.get('/agents', (req, res) => {
   res.send({})
 })
 
-api.get('/agent/:uuid', (req, res) => {
+api.get('/agent/:uuid', (req, res, next) => {
   const { uuid } = req.params
+  
+  if(uuid !== 'yyy'){
+    return next(new Error('Agent not found'))
+  }
   res.send({ uuid })
 })
 
