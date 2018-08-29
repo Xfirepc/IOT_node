@@ -1,6 +1,6 @@
 'use strict'
 
-const debug = require('debug')('platziverse:api:reputes')
+const debug = require('debug')('platziverse:api:server')
 const http = require('http')
 const express = require('express')
 const chalk = require('chalk')
@@ -18,13 +18,10 @@ app.use('/api', api)
 app.use((err, req, res, next) => {
   debug(`Error: ${err.message}`)
 
-  if (err.message.match(/not found/))
-    return res.status(404).send({ error: err.message })
+  if (err.message.match(/not found/)) { return res.status(404).send({ error: err.message }) }
 
   res.status(500).send({ error: err.message })
 })
-
-
 
 function handleFatalError (err) {
   console.error(`${chalk.red('[fatal error]')} ${err.message}`)
@@ -32,12 +29,12 @@ function handleFatalError (err) {
   process.exit(1)
 }
 
-if(!module.parent) {
+if (!module.parent) {
   process.on('uncaghtException', handleFatalError)
   process.on('unhandledRejection', handleFatalError)
-  
+
   server.listen(port, () => {
-  console.log(`${chalk.green('[platziverse-api]')} server runng on port: ${port}`)
+    console.log(`${chalk.green('[platziverse-api]')} server runng on port: ${port}`)
   })
 }
 
