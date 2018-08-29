@@ -2,7 +2,7 @@
 
 const debug = require('debug')
 
-module.exports = function getConfigDB( reset ){
+module.exports = function getConfigDB( reset = false ){
   const config = {
     database: process.env.DB_NAME || 'platziverse',
     username: process.env.DB_USER || 'platzi',
