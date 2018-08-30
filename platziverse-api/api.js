@@ -36,14 +36,23 @@ api.get('/agents', async (req, res, next) => {
 })
 
 
-api.get('/agent/:uuid', (req, res, next) => {
+api.get('/agent/:uuid', async (req, res, next) => {
   const { uuid } = req.params
-
-  if (uuid !== 'yyy') {
-    return next(new Error('Agent not found'))
+  debug('A request has to come /agent/:uuid')
+  let agent
+  try {
+    agent = await Agent.findByUuid(uuid)
+  } catch (e) {
+    return next(e)
   }
-  res.send({ uuid })
+  if (!agent) {
+    return next(new Error(`Agent with uuid ${uuid} not found`))
+  }
+  res.send({ agent })
 })
+
+
+
 
 api.get('/agent/:metrics', (req, res) => {
   const { uuid } = req.params
