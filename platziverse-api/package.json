@@ -20,6 +20,8 @@
   },
   "devDependencies": {
     "ava": "^0.25.0",
+    "proxyquire": "^2.1.0",
+    "sinon": "^6.1.5",
     "supertest": "^3.1.0"
   }
 }
