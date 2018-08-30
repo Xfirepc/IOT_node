@@ -10,6 +10,7 @@ let services, Agent, Metric
 
 api.use('*', async (req, res, next) => {
   if (!services) {
+    debug('Connecting to database..')
     try {
       services = await db(configDB)
     } catch (e) {
@@ -23,14 +24,16 @@ api.use('*', async (req, res, next) => {
 })
 
 
-
-
-api.get('/agents', (req, res) => {
+api.get('/agents', async (req, res, next) => {
   debug('A request has to come /agents')
-  res.status(200).send({})
+  let agents = []
+  try {
+    agents = await Agent.findConnected()
+  } catch (e) {
+    return next(e)
+  }
+  res.send({agents})
 })
-
-
 
 
 api.get('/agent/:uuid', (req, res, next) => {
