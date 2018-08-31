@@ -31,7 +31,7 @@ api.get('/agents', auth(config), async (req, res, next) => {
   debug('A request has to come /agents')
   const { user } = req
 
-  if( user || !user.username ){
+  if( !user || !user.username ){
     return next(new Error('Not Authorized'))
   }
 
@@ -41,7 +41,7 @@ api.get('/agents', auth(config), async (req, res, next) => {
     if(user.admin)
       agents = await Agent.findConnected()
       
-    agents = await Agent.findByUsename(user.username)
+    agents = await Agent.findByUsername(user.username)
   } catch (e) {
     return next(e)
   }

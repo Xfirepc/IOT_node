@@ -27,6 +27,7 @@ function extend (obj, values) {
 module.exports = {
   single: agent,
   all: agents,
+  username: name => agents.filter(a => a.username === name),
   connected: agents.filter(a => a.connected),
   platzi: agents.filter(a => a.username === 'platzi'),
   byUuid: id => agents.filter(a => a.uuid === id).shift(),
