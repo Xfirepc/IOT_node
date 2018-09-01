@@ -38,10 +38,10 @@ api.get('/agents', auth(config), async (req, res, next) => {
   let agents = []
 
   try {
+    agents = await Agent.findByUsername(user.username)
     if(user.admin)
       agents = await Agent.findConnected()
       
-    agents = await Agent.findByUsername(user.username)
   } catch (e) {
     return next(e)
   }
@@ -49,10 +49,14 @@ api.get('/agents', auth(config), async (req, res, next) => {
   res.send({agents})
 })
 
-api.get('/agent/:uuid', async (req, res, next) => {
+api.get('/agent/:uuid', auth(config), async (req, res, next) => {
   const { uuid } = req.params
+  const { user } = req
   debug('A request has to come /agent/:uuid')
 
+  if( !user || !user.username ){
+    return next(new Error('Not Authorized'))
+  }
   let agent
 
   try {
@@ -68,9 +72,14 @@ api.get('/agent/:uuid', async (req, res, next) => {
   res.send({ agent })
 })
 
-api.get('/metrics/:uuid', async (req, res, next) => {
+api.get('/metrics/:uuid', auth(config), async (req, res, next) => {
   const { uuid } = req.params
+  const { user } = req
   debug('A request has to come /metrics/:uuid')
+
+  if( !user || !user.username ){
+    return next(new Error('Not Authorized'))
+  }
 
   let metrics = []
 
@@ -86,10 +95,14 @@ api.get('/metrics/:uuid', async (req, res, next) => {
   res.send({ metrics })
 })
 
-api.get('/metrics/:uuid/:type', async (req, res, next) => {
+api.get('/metrics/:uuid/:type', auth(config), async (req, res, next) => {
   const { uuid, type } = req.params
-
+  const { user } = req
   debug('A request has to come /metrics/:uuid/:type')
+
+  if( !user || !user.username ){
+    return next(new Error('Not Authorized'))
+  }
 
   let metrics = []
 
