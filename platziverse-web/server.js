@@ -3,14 +3,22 @@ const path = require('path')
 const express = require('express')
 const debug = require('debug')('platziverse:web')
 const chalk = require('chalk')
-
+const socketio= require('socket.io')
 
 const app = express()
 const port = process.env.PORT || 8080
 const server = http.createServer(app)
-
+const io = socketio(server)
 
 app.use(express.static(path.join(__dirname, 'public')))
+
+
+// Socket.io / web sockets
+
+io.on('connect', socket => {
+  debug('Connected ' + socket.id )
+})
+
 
 function handleFatalError (err) {
   console.error(`${chalk.red('[fatal error]')} ${err.message}`)
