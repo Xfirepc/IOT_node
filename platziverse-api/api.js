@@ -1,12 +1,15 @@
 'use strict'
 
 const debug = require('debug')('platziverse:api:routes')
-const express = require('express')
 const db = require('platziverse-db')
 const configDB = require('../platziverse-db/config-db')(false)
-const api = express.Router()
+
+const express = require('express')
 const auth = require('express-jwt')
+const guard = require('express-jwt-permissions')()
 const config = require('./config')
+
+const api = express.Router()
 
 let services, Agent, Metric
 
@@ -72,7 +75,7 @@ api.get('/agent/:uuid', auth(config), async (req, res, next) => {
   res.send({ agent })
 })
 
-api.get('/metrics/:uuid', auth(config), async (req, res, next) => {
+api.get('/metrics/:uuid', auth(config), guard.check(['metrics:read']), async (req, res, next) => {
   const { uuid } = req.params
   const { user } = req
   debug('A request has to come /metrics/:uuid')
