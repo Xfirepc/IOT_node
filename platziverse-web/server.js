@@ -17,6 +17,14 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 io.on('connect', socket => {
   debug('Connected ' + socket.id )
+
+  socket.on('agent/message', payload => {
+    console.log(payload)
+  })
+
+  setInterval(() => {
+    socket.emit('agent/message', { agent: 'xxx-yyy' })
+  }, 5000)
 })
 
 

@@ -9,8 +9,18 @@
 </head>
 <body>
     <h1>Platziverse</h1>
+
     <script type="text/javascript">
+
       var socket = io()
-    </script>
+      socket.on('agent/message', payload => {
+        console.log(payload)
+      })
+
+      setTimeout(() => {
+        socket.emit('agent/message', 'hello recibido', 5000)
+      })
+   
+   </script>
 </body>
 </html>
