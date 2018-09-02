@@ -13,13 +13,19 @@
     <script type="text/javascript">
 
       var socket = io()
+      
       socket.on('agent/message', payload => {
         console.log(payload)
       })
 
-      setTimeout(() => {
-        socket.emit('agent/message', 'hello recibido', 5000)
+      socket.on('agent/connected', payload => {
+        console.log(payload)
       })
+
+      socket.on('agent/disconnected', payload => {
+        console.log(payload)
+      })
+
    
    </script>
 </body>

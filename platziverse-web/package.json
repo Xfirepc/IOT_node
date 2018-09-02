@@ -15,7 +15,8 @@
   "scripts": {
     "start-dev": "DEBUG=platziverse:* nodemon server.js",
     "start": "NODE_ENV=production node server.js",
-    "lint": "standard"
+    "lint": "standard",
+    "platziverse-agent": "../platziverse-agent/index.js"
   },
   "author": "Xfirepc",
   "license": "MIT"
