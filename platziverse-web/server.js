@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 // Socket.io / web sockets
 
 io.on('connect', socket => {
-  debug('Connected ' + socket.id )
+  debug('Connected on socket!  ' + socket.id )
 
   socket.on('agent/message', payload => {
     socket.emit('agent/message', payload)
