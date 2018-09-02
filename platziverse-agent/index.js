@@ -5,7 +5,7 @@ const mqtt = require('mqtt')
 const os = require('os')
 const util = require('util')
 const defaults = require('defaults')
-const EventEmmiter = require('events')
+const EventEmitter = require('events')
 const { parsePayload } = require('../platziverse-mqtt/utils.js')
 const uuid = require('uuid')
 
