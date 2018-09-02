@@ -6,6 +6,7 @@ const chalk = require('chalk')
 const socketio= require('socket.io')
 const PlatziverseAgent = require('../platziverse-agent')
 
+const { pipe } = require('./pipe')
 
 const app = express()
 const port = process.env.PORT || 8080
@@ -22,17 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 io.on('connect', socket => {
   debug('Connected on socket!  ' + socket.id )
 
-  socket.on('agent/message', payload => {
-    socket.emit('agent/message', payload)
-  })
-
-  agent.on('agent/connected', payload => {
-    socket.emit('agent/connected', payload)
-  })
-
-  agent.on('agent/disconnected', payload => {
-    socket.emit('agent/disconnected', payload)
-  })
+  pipe(agent, socket)
 })
 
 
