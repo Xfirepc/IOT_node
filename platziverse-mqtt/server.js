@@ -90,7 +90,7 @@ server.on('published', async (packet, client) => {
           return handleError(e)
         }
 
-        debug(`### Agent ${agent.uuid} saved`)
+        debug(`Agent ${agent.uuid} saved`)
 
         // Notify Agent is Connected
         if (!clients.get(client.id)) {
@@ -107,6 +107,7 @@ server.on('published', async (packet, client) => {
               }
             })
           })
+          
         }
 
         // Store Metrics
