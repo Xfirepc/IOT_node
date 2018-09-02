@@ -13,6 +13,7 @@ const proxy = require('./proxy')
 const { pipe } = require('./pipe')
 
 const port = process.env.PORT || 8080
+
 const app = asyncify(express())
 const server = http.createServer(app)
 const io = socketio(server)
@@ -47,6 +48,11 @@ function handleFatalError (err) {
 
 process.on('uncaughtException', handleFatalError)
 process.on('unhandledRejection', handleFatalError)
+
+server.on('listening',function(){
+  console.log('ok, server is running');
+});
+
 
 server.listen(port, () => {
   console.log(`${chalk.green('[platziverse-web]')} server listening on port ${port}`)

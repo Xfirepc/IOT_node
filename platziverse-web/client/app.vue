@@ -1,5 +1,7 @@
 <template>
   <div>
+    <agent uuid="yyy"></agent>
+    <metric type="memory" uuid="uuid"></metric>
     <agent
       v-for="agent in agents"
       :uuid="agent.uuid"
@@ -12,7 +14,7 @@
 <style>
   body {
     font-family: Arial;
-    background: #f8f8f8;
+    background: #d3d3d3;
     margin: 0;
   }
 </style>
