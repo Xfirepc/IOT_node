@@ -101,7 +101,7 @@ api.get('/metrics/:uuid', auth(config), guard.check(['metrics:read']), async (re
 api.get('/metrics/:uuid/:type', auth(config), async (req, res, next) => {
   const { uuid, type } = req.params
   const { user } = req
-  debug('A request has to come /metrics/:uuid/:type')
+  debug(`A request has to come /metrics/${uuid}/${type}`)
 
   if( !user || !user.username ){
     return next(new Error('Not Authorized'))
@@ -116,7 +116,7 @@ api.get('/metrics/:uuid/:type', auth(config), async (req, res, next) => {
   }
 
   if (!metrics || metrics.length === 0) {
-    return next(new Error(`Metrics not found for agent ID: ${uuid} and type: ${type}`))
+    return next(new Error(`Metrics not found for agent id: ${uuid} and type: ${type}`))
   }
 
   res.send({ metrics })

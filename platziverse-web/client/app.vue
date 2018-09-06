@@ -1,7 +1,7 @@
 <template>
   <div>
-    <agent uuid="yyy"></agent>
-    <metric type="memory" uuid="uuid"></metric>
+    
+    <metric uuid="709cd12c-5f4a-431b-9961-5b6928547b63" type="promiseMetric"></metric>
     <agent
       v-for="agent in agents"
       :uuid="agent.uuid"

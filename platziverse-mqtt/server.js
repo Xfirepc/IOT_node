@@ -107,7 +107,6 @@ server.on('published', async (packet, client) => {
               }
             })
           })
-          
         }
 
         // Store Metrics

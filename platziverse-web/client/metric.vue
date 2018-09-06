@@ -25,10 +25,9 @@
 </style>
 <script>
 const request = require('request-promise-native')
-const LineChart = require('./line-chart')
 const moment = require('moment')
-const randomColor =require('random-material-color')
-
+const randomColor = require('random-material-color')
+const LineChart = require('./line-chart')
 
 module.exports = {
   name: 'metric',
@@ -57,10 +56,9 @@ module.exports = {
 
       const options = {
         method: 'GET',
-        url: 'http://localhost:8080/metrics/{$uuid}/${type}',
+        url: `http://localhost:8080/metrics/${uuid}/${type}`,
         json: true
       }
-
 
       let result
       try {
@@ -73,11 +71,22 @@ module.exports = {
       const labels = []
       const data = []
 
-      if(Array.isArray(result)){
-        result.forEach( m => {
-          labels.push( moment(m.createdAt).format('HH:mm:ss') )
+      if (Array.isArray(result)) {
+        result.forEach(m => {
+          labels.push(moment(m.createdAt).format('HH:mm:ss'))
           data.push(m.value)
+          
         })
+      }
+      console.log(result)
+
+      this.datacollection = {
+        labels,
+        datasets: [{
+          backgroundColor: this.color,
+          label: type,
+          data
+        }]
       }
     },
 

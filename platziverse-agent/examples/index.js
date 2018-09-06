@@ -1,5 +1,3 @@
-'use strict'
-
 const PlatziverseAgent = require('../')
 
 const agent = new PlatziverseAgent({
@@ -38,4 +36,4 @@ function handler (payload) {
   console.log(payload)
 }
 
-setTimeout(() => agent.disconnect(), 5000)
+setTimeout(() => agent.disconnect(), 10000)

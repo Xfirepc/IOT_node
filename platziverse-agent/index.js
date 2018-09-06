@@ -8,16 +8,14 @@ const defaults = require('defaults')
 const EventEmitter = require('events')
 const { parsePayload } = require('../platziverse-mqtt/utils.js')
 const uuid = require('uuid')
-
 const options = {
   name: 'untitled',
   username: 'platzi',
-  inteval: 5000,
+  interval: 5000,
   mqtt: {
-    host: 'mqtt://localhost:1883'
+    host: 'mqtt://localhost'
   }
 }
-
 
 class PlatziverseAgent extends EventEmitter {
   constructor (opts) {
