@@ -89,9 +89,15 @@ api.get('/metrics/:uuid', auth(config.auth), guard.check(['metrics:read']), asyn
   res.send(metrics)
 })
 
-api.get('/metrics/:uuid/:type', async (req, res, next) => {
+api.get('/metrics/:uuid/:type', auth(config.auth),  async (req, res, next) => {
   const { uuid, type } = req.params
+  
+  const { user } = req
 
+  if (!user || !user.username) {
+    return next(new Error('Not authorized'))
+  }
+  console.log(user)
   debug(`request to /metrics/${uuid}/${type}`)
 
   let metrics = []

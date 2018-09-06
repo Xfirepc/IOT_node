@@ -2,7 +2,7 @@
   <div>
     
     <metric 
-      uuid="aa5f3d11-dd98-4d36-b70b-0881cb389a91" 
+      uuid="1cb2171a-0baf-4b3d-ade9-ac9ab660f025" 
       type="promiseMetric"
       :socket = "socket" 
     ></metric>
