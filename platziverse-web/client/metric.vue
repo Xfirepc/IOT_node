@@ -75,10 +75,8 @@ module.exports = {
         result.forEach(m => {
           labels.push(moment(m.createdAt).format('HH:mm:ss'))
           data.push(m.value)
-          
         })
       }
-      console.log(result)
 
       this.datacollection = {
         labels,
