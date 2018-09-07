@@ -99,7 +99,7 @@ module.exports = {
       const { uuid } = this
       const options = {
         method: 'GET',
-        url: `http://localhost:8000/agent/${uuid}`,
+        url: `http://localhost:8080/agent/${uuid}`,
         json: true
       }
       let agent
@@ -114,10 +114,11 @@ module.exports = {
       this.hostname = agent.hostname
       this.connected = agent.connected
       this.pid = agent.pid
+      console.log(agent)
       this.loadMetrics()
     },
     
-    loadMetrics () {
+    async loadMetrics () {
 
       const { uuid } = this
       const options = {
@@ -133,6 +134,7 @@ module.exports = {
         this.error = e.error.error
         return
       }
+      console.log(metrics)
       this.metrics = metrics
 
     },

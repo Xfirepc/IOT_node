@@ -1,7 +1,8 @@
 <template>
   <div>
     
-    <agent uuid="" :socket="socket"></agent>
+    <agent uuid="036afcf9-4e66-4ce4-937f-bb8fb7789d5c" 
+      :socket="socket"></agent>
     <agent
       v-for="agent in agents"
       :uuid="agent.uuid"
