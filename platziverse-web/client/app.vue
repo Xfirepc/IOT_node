@@ -1,11 +1,7 @@
 <template>
   <div>
     
-    <metric 
-      uuid="1cb2171a-0baf-4b3d-ade9-ac9ab660f025" 
-      type="promiseMetric"
-      :socket = "socket" 
-    ></metric>
+    <agent uuid="" :socket="socket"></agent>
     <agent
       v-for="agent in agents"
       :uuid="agent.uuid"
