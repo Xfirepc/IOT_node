@@ -1,12 +1,10 @@
 <template>
   <div>
-    
-    <agent uuid="036afcf9-4e66-4ce4-937f-bb8fb7789d5c" 
-      :socket="socket"></agent>
     <agent
       v-for="agent in agents"
       :uuid="agent.uuid"
-      :key="agent.uuid">
+      :key="agent.uuid"
+      :socket="socket">
     </agent>
     <p v-if="error">{{error}}</p>
   </div>
@@ -22,6 +20,7 @@
 
 <script>
 
+const request =  require('request-promise-native')
 const io = require('socket.io-client')
 const socket = io()
 
@@ -36,8 +35,33 @@ module.exports = {
   mounted () {
     this.initialize()
   },
+
   methods: {
-    initialize () {
+    async initialize () {
+      const options = {
+        method: 'GET',
+        url: 'http://localhost:8080/agents',
+        json: true
+      }
+
+      let result
+      try {
+        result = await request(options)
+      } catch (e) {
+        this.error = e.error.error
+        return
+      }
+      console.log(result)
+      
+      this.agents = result
+      socket.on('agent/connected', payload => {
+        const { uuid } = payload.agent
+        const existing = this.agents.find(a => a.uuid === uuid)
+
+        if(!existing){
+          this.agents.push(payload.agent)
+        }
+      })
     }
   }
 }
