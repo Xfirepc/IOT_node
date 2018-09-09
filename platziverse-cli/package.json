@@ -1,0 +1,17 @@
+{
+  "name": "platziverse-cli",
+  "version": "1.0.0",
+  "description": "A simple platform IoT -CLI",
+  "bin": "platziverse.js",
+  "scripts": {
+    "lint": "standard"
+  },
+  "author": "Xfirepc",
+  "license": "MIT",
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.8.6",
+    "minimist": "^1.2.0",
+    "standard": "^12.0.1"
+  }
+}
