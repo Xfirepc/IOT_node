@@ -7,7 +7,7 @@ const blessed = require('blessed')
 const contrib = require('blessed-contrib')
 const PlatziverseAgent = require('platziverse-agent')
 const screen = blessed.screen()
-
+const moment = require('moment')
 
 const agents = new Map()
 const agentMetrics = new Map()
@@ -51,6 +51,38 @@ agent.on('agent/disconnected', payload => {
     agentMetrics.delete(uuid)
   }
 
+  renderData()
+})
+
+
+agent.on('agent/message', payload => {
+  const { uuid } = payload.agent
+  const { timestamp } = payload
+
+  if(!agents.has(uuid)) { 
+    agents.set(uuid, payload.agent)
+    agentMetrics.set(uuid, {})
+  }
+
+  const metrics = agentMetrics.get(uuid)
+
+  payload.metrics.forEach(m => {
+    const { type, value } = m
+
+    if(!Array.isArray(metrics[type])) {
+      metrics[type] = []
+    }
+
+    const length = metrics[type].length
+    if(length >= 20) {
+      metrics[type].shitf()
+    }
+
+    metrics[type].push({
+      value,
+      timestamp: moment(timestamp).format('HH:mm:ss')
+    })
+  })
   renderData()
 })
 
