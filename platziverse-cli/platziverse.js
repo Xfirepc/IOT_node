@@ -47,7 +47,19 @@ function renderData () {
 
   for(let [uuid, val] of agents) {
     const title = `${val.name} - (${val.pid})`
+    treeData[title] = {
+      uuid,
+      agent: true,
+      children: {}
+    }
   }
+
+  tree.setData({
+    extended: true,
+    children: treeData
+  })
+
+  screen.render()
 }
 
 screen.key([ 'escape', 'q', 'C-c' ], (ch, key) => {
