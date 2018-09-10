@@ -14,7 +14,6 @@ const screen = blessed.screen()
 
 const agents = new Map()
 const agentMetrics = new Map()
-
 let extended = []
 let selected = {
   uuid: null,
@@ -92,30 +91,27 @@ agent.on('agent/message', payload => {
   renderData()
 })
 
-function renderMetric () {
-  if(!selected.uuid && !selected.type){
-    line.setData[{ x: [], y: [], title: 'Nothing' }]
-    screen.render()
+tree.on('select', node => {
+  const { uuid } = node
+
+  if (node.agent) {
+    node.extended ? extended.push(uuid) : extended = extended.filter(e => e !== uuid)
+    selected.uuid = null
+    selected.type = null
     return
   }
 
-  const metrics = agentMetrics.get(selected.uuid)
-  const values = metrics[selected.type]
-  const series = [{
-    title: selected.type,
-    x: values.map(v => v.timestamp).slice(-10),
-    y: values.map(v => v.value).slice(-10)
-  }]
+  selected.uuid = uuid
+  selected.type = node.type
 
-  line.setData(series)
-  screen.render()
-}
+  renderMetric()
+})
 
 function renderData () {
   const treeData = {}
-
+  let idx = 0
   for (let [ uuid, val ] of agents) {
-    const title = `${val.name}>(${val.pid})`
+    const title = ` ${val.name} - (${val.pid})`
     treeData[title] = {
       uuid,
       agent: true,
@@ -131,7 +127,7 @@ function renderData () {
         metric: true
       }
 
-      const metricName = ` ${type}`
+      const metricName = ` ${type} ${' '.repeat(500)} ${idx++}`
       treeData[title].children[metricName] = metric
     })
   }
@@ -140,26 +136,28 @@ function renderData () {
     extended: true,
     children: treeData
   })
+
   renderMetric()
 }
 
-
-tree.on('select', node => {
-  const { uuid } = node
-  if(node.agent) {
-    node.extended ?  extended.push(uuid) : extended = extended.filter(e => e !== uuid)
-    selected.uuid = null
-    selected.uuid = null
+function renderMetric () {
+  if (!selected.uuid && !selected.type) {
+    line.setData([{ x: [], y: [], title: '' }])
+    screen.render()
     return
   }
+s
+  const metrics = agentMetrics.get(selected.uuid)
+  const values = metrics[selected.type]
+  const series = [{
+    title: selected.type,
+    x: values.map(v => v.timestamp).slice(-10),
+    y: values.map(v => v.value).slice(-10)
+  }]
 
-  selected.uuid = uuid
-  selected.type = node.type
-
-  renderMetric()
-
-})
-
+  line.setData(series)
+  screen.render()
+}
 
 screen.key([ 'escape', 'q', 'C-c' ], (ch, key) => {
   process.exit(0)
