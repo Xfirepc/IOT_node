@@ -42,6 +42,18 @@ agent.on('agent/connected', payload => {
   renderData()
 })
 
+
+agent.on('agent/disconnected', payload => {
+  const { uuid } = payload.agent
+
+  if(agents.has(uuid)) { 
+    agents.delete(uuid)
+    agentMetrics.delete(uuid)
+  }
+
+  renderData()
+})
+
 function renderData () {
   const treeData = {}
 
