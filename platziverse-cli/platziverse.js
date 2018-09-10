@@ -15,6 +15,12 @@ const screen = blessed.screen()
 const agents = new Map()
 const agentMetrics = new Map()
 
+let extended = []
+let selected = {
+  uuid: null,
+  type: null
+}
+
 const grid = new contrib.grid({
   rows: 1,
   cols: 4,
@@ -86,6 +92,25 @@ agent.on('agent/message', payload => {
   renderData()
 })
 
+function renderMetric () {
+  if(!selected.uuid && !selected.type){
+    line.setData[{ x: [], y: [], title: 'Nothing' }]
+    screen.render()
+    return
+  }
+
+  const metrics = agentMetrics.get(selected.uuid)
+  const values = metrics[selected.type]
+  const series = [{
+    title: selected.type,
+    x: values.map(v => v.timestamp).slice(-10),
+    y: values.map(v => v.value).slice(-10)
+  }]
+
+  line.setData(series)
+  screen.render()
+}
+
 function renderData () {
   const treeData = {}
 
@@ -94,6 +119,7 @@ function renderData () {
     treeData[title] = {
       uuid,
       agent: true,
+      extended: extended.includes(uuid),
       children: {}
     }
 
@@ -114,8 +140,26 @@ function renderData () {
     extended: true,
     children: treeData
   })
-  screen.render()
+  renderMetric()
 }
+
+
+tree.on('select', node => {
+  const { uuid } = node
+  if(node.agent) {
+    node.extended ?  extended.push(uuid) : extended = extended.filter(e => e !== uuid)
+    selected.uuid = null
+    selected.uuid = null
+    return
+  }
+
+  selected.uuid = uuid
+  selected.type = node.type
+
+  renderMetric()
+
+})
+
 
 screen.key([ 'escape', 'q', 'C-c' ], (ch, key) => {
   process.exit(0)
